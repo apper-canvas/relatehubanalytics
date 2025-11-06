@@ -80,12 +80,13 @@ createRoute({
     path: "quotes",
     element: <Quotes />
   }),
-  createRoute({
+createRoute({
     path: "*",
     element: <NotFound />
   }),
+];
 
-const routes = [
+export const routes = [
   {
     path: "/",
     element: <Root />,
