@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { format } from "date-fns";
+import { safeFormat } from "@/utils/dateUtils";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
 
@@ -51,7 +51,7 @@ const DealCard = ({ deal, contact, onDragStart, onDragEnd }) => {
         <div className="flex items-center space-x-2 text-xs text-gray-600">
           <ApperIcon name="Calendar" className="h-3 w-3" />
           <span>
-Close: {format(new Date(deal.expected_close_date_c || deal.expectedCloseDate), "MMM d, yyyy")}
+Close: {safeFormat(deal.expected_close_date_c || deal.expectedCloseDate, "MMM d, yyyy", "Invalid date")}
           </span>
         </div>
       </div>

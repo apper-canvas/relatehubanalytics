@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { safeFormat } from "@/utils/dateUtils";
 import ApperIcon from "@/components/ApperIcon";
 import { cn } from "@/utils/cn";
 
@@ -42,7 +42,7 @@ const ActivityItem = ({ activity }) => {
       <div className="flex-1 min-w-0">
         <p className="text-sm text-gray-900">{activity.description}</p>
         <p className="text-xs text-gray-500 mt-1">
-          {format(new Date(activity.timestamp), "MMM d, yyyy 'at' h:mm a")}
+{safeFormat(activity.timestamp, "MMM d, yyyy 'at' h:mm a", "Invalid date")}
         </p>
       </div>
     </div>

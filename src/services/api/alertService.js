@@ -1,7 +1,9 @@
-import { taskService } from './taskService';
-import { activityService } from './activityService';
-import { contactService } from './contactService';
-import { isToday, isTomorrow, isAfter, subDays, format } from 'date-fns';
+import { taskService } from "./taskService";
+import { activityService } from "./activityService";
+import { contactService } from "./contactService";
+import { isValidDate, safeFormat, safeIsAfter, safeIsToday, safeIsTomorrow, safeSubDays, safeDateSort } from "@/utils/dateUtils";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 class AlertService {
   constructor() {
@@ -30,19 +32,19 @@ const [tasks, activities, contacts] = await Promise.all([
 tasks.forEach(task => {
         if (task.completed_c) return;
 
-        const dueDate = new Date(task.due_date_c);
+const dueDate = task.due_date_c;
         const alertKey = `task-${task.Id}`;
 
         if (this.dismissedAlerts.has(alertKey)) return;
 
-        // Overdue tasks
-        if (isAfter(now, dueDate)) {
+// Overdue tasks
+        if (safeIsAfter(now, dueDate)) {
           alerts.push({
             Id: `overdue-${task.Id}`,
             type: 'task_overdue',
             priority: 'high',
             title: 'Overdue Task',
-message: `"${task.title_c}" was due ${format(dueDate, 'MMM d, yyyy')}`,
+message: `"${task.title_c}" was due ${safeFormat(dueDate, 'MMM d, yyyy', 'unknown date')}`,
             taskId: task.Id,
             task: task,
             timestamp: task.due_date_c,
@@ -52,8 +54,8 @@ message: `"${task.title_c}" was due ${format(dueDate, 'MMM d, yyyy')}`,
             ]
           });
         }
-        // Tasks due today
-        else if (isToday(dueDate)) {
+// Tasks due today
+        else if (safeIsToday(dueDate)) {
           alerts.push({
             Id: `due-today-${task.Id}`,
             type: 'task_due_today',
@@ -69,8 +71,8 @@ message: `"${task.title_c}" is due today`,
             ]
           });
         }
-        // Tasks due tomorrow
-        else if (isTomorrow(dueDate)) {
+// Tasks due tomorrow
+        else if (safeIsTomorrow(dueDate)) {
           alerts.push({
             Id: `due-tomorrow-${task.Id}`,
             type: 'task_due_tomorrow',
@@ -87,14 +89,14 @@ message: `"${task.title_c}" is due tomorrow`,
         }
       });
 
-      // Activity-based alerts (follow-ups needed)
-      const sevenDaysAgo = subDays(now, 7);
-const recentActivities = activities
+// Activity-based alerts (follow-ups needed)
+      const sevenDaysAgo = safeSubDays(now, 7);
+      const recentActivities = activities
         .filter(activity => {
-          const activityDate = new Date(activity.timestamp_c);
+          const activityDate = activity.timestamp_c;
           return activityDate >= sevenDaysAgo && activityDate <= now;
         })
-.sort((a, b) => new Date(b.timestamp_c) - new Date(a.timestamp_c));
+.sort((a, b) => safeDateSort(a.timestamp_c, b.timestamp_c));
 
       // Group by contact and suggest follow-ups for recent activities
       const contactActivityMap = {};
@@ -135,7 +137,7 @@ title: 'Follow-up Needed',
       alerts.sort((a, b) => {
         const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
         if (priorityDiff !== 0) return priorityDiff;
-        return new Date(b.timestamp) - new Date(a.timestamp);
+return safeDateSort(a.timestamp, b.timestamp);
       });
 
       return alerts;
@@ -151,10 +153,9 @@ title: 'Follow-up Needed',
     return { success: true };
   }
 
-  async completeTask(taskId) {
-try {
+async completeTask(taskId) {
+    try {
       await taskService.update(taskId, { completed_c: true });
-      this.dismissedAlerts.add(`task-${taskId}`);
       this.dismissedAlerts.add(`task-${taskId}`);
       return { success: true };
     } catch (error) {

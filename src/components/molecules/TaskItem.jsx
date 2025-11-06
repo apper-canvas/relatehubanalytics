@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { format, isAfter } from "date-fns";
+import { safeFormat, safeIsAfter } from "@/utils/dateUtils";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import { cn } from "@/utils/cn";
 
 const TaskItem = ({ task, contact, onToggleComplete, onEdit, onDelete }) => {
-const isOverdue = !(task.completed_c || task.completed) && isAfter(new Date(), new Date(task.due_date_c || task.dueDate));
+const isOverdue = !(task.completed_c || task.completed) && safeIsAfter(new Date(), task.due_date_c || task.dueDate, false);
 
   return (
     <motion.div
@@ -52,8 +52,8 @@ const isOverdue = !(task.completed_c || task.completed) && isAfter(new Date(), n
             "flex items-center space-x-1 text-xs",
 isOverdue && !(task.completed_c || task.completed) ? "text-error" : "text-gray-500"
           )}>
-            <ApperIcon name="Calendar" className="h-3 w-3" />
-            <span>{format(new Date(task.due_date_c || task.dueDate), "MMM d, yyyy")}</span>
+<ApperIcon name="Calendar" className="h-3 w-3" />
+            <span>{safeFormat(task.due_date_c || task.dueDate, "MMM d, yyyy", "Invalid date")}</span>
             {isOverdue && !(task.completed_c || task.completed) && (
               <span className="text-error font-medium ml-1">(Overdue)</span>
             )}

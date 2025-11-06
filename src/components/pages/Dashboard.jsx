@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { format, subDays } from "date-fns";
+import { safeDateSort, safeFormat, safeSubDays } from "@/utils/dateUtils";
 import Chart from "react-apexcharts";
 import { alertService } from "@/services/api/alertService";
-import AlertBanner from "@/components/molecules/AlertBanner";
 import { toast } from "react-toastify";
-import ApperIcon from "@/components/ApperIcon";
-import StatsCard from "@/components/molecules/StatsCard";
-import ActivityItem from "@/components/molecules/ActivityItem";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
 import { contactService } from "@/services/api/contactService";
 import { dealService } from "@/services/api/dealService";
 import { taskService } from "@/services/api/taskService";
 import { activityService } from "@/services/api/activityService";
+import ApperIcon from "@/components/ApperIcon";
+import Pipeline from "@/components/pages/Pipeline";
+import StatsCard from "@/components/molecules/StatsCard";
+import ActivityItem from "@/components/molecules/ActivityItem";
+import AlertBanner from "@/components/molecules/AlertBanner";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 
 const Dashboard = () => {
 const [stats, setStats] = useState({
@@ -66,8 +67,8 @@ const activeDeals = deals.filter(deal => !["Won", "Lost"].includes(deal.stage_c 
       setChartData(chartMetrics);
 
       // Get recent activities (last 10)
-      const sortedActivities = activities
-        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+const sortedActivities = activities
+        .sort((a, b) => safeDateSort(a.timestamp, b.timestamp))
         .slice(0, 10);
 
       setRecentActivities(sortedActivities);
@@ -83,12 +84,14 @@ const activeDeals = deals.filter(deal => !["Won", "Lost"].includes(deal.stage_c 
   const calculateChartData = (deals) => {
     // Pipeline Value Trends (last 6 months)
     const months = [];
-    const pipelineValues = [];
+const pipelineValues = [];
     for (let i = 5; i >= 0; i--) {
-      const date = subDays(new Date(), i * 30);
-      months.push(format(date, 'MMM'));
-const monthDeals = deals.filter(deal => 
-        new Date(deal.CreatedOn || deal.createdAt) <= date && !["Won", "Lost"].includes(deal.stage_c || deal.stage)
+      const date = safeSubDays(new Date(), i * 30);
+months.push(safeFormat(date, 'MMM', 'Invalid'));
+      const monthDeals = deals.filter(deal => {
+        const dealDate = new Date(deal.CreatedOn || deal.createdAt);
+        return dealDate <= date && !["Won", "Lost"].includes(deal.stage_c || deal.stage);
+      }
       );
       pipelineValues.push(monthDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value), 0));
     }

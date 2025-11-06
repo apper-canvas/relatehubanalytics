@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { isToday, isTomorrow, isThisWeek, parseISO } from "date-fns";
+import { safeIsToday, safeIsTomorrow, safeIsThisWeek, safeParseISO, safeToISOString } from "@/utils/dateUtils";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
@@ -81,11 +81,11 @@ const contact = getContactById(task.contact_id_c || task.contactId);
       const now = new Date();
       
       filtered = filtered.filter(task => {
-const dueDate = parseISO(task.due_date_c || task.dueDate);
+const dueDate = safeParseISO(task.due_date_c || task.dueDate);
         
         switch (filter) {
-          case "today":
-            return isToday(dueDate) && !(task.completed_c || task.completed);
+case "today":
+            return safeIsToday(dueDate) && !(task.completed_c || task.completed);
           case "overdue":
             return dueDate < now && !(task.completed_c || task.completed);
           case "completed":
@@ -104,8 +104,8 @@ if ((a.completed_c || a.completed) !== (b.completed_c || b.completed)) {
         return (a.completed_c || a.completed) ? 1 : -1; // Completed tasks last
       }
       
-      const aDate = parseISO(a.due_date_c || a.dueDate);
-      const bDate = parseISO(b.due_date_c || b.dueDate);
+const aDate = safeParseISO(a.due_date_c || a.dueDate);
+      const bDate = safeParseISO(b.due_date_c || b.dueDate);
       const now = new Date();
       
       const aOverdue = aDate < now && !(a.completed_c || a.completed);
@@ -152,7 +152,7 @@ await activityService.create({
         deal_id_c: null,
         type_c: "task",
         description_c: `Task deleted: ${task.title_c || task.title}`,
-        timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
       });
       
       setTasks(prev => prev.filter(task => task.Id !== taskId));
@@ -175,7 +175,7 @@ await activityService.create({
         deal_id_c: null,
         type_c: "task",
         description_c: `Task ${updatedTask.completed_c ? 'completed' : 'reopened'}: ${task.title_c || task.title}`,
-        timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
       });
       
       setTasks(prev =>
@@ -206,7 +206,7 @@ await activityService.create({
           deal_id_c: null,
           type_c: "task",
           description_c: `Task updated: ${taskData.title_c || taskData.title}`,
-          timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
         });
         
         setTasks(prev =>
@@ -227,7 +227,7 @@ await activityService.create({
           deal_id_c: null,
           type_c: "task",
           description_c: `New task created: ${taskData.title_c || taskData.title}`,
-          timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
         });
         
         setTasks(prev => [...prev, newTask]);
@@ -247,8 +247,8 @@ await activityService.create({
 
   const getTaskStats = () => {
     const now = new Date();
-const overdue = tasks.filter(task => !(task.completed_c || task.completed) && parseISO(task.due_date_c || task.dueDate) < now).length;
-    const today = tasks.filter(task => !(task.completed_c || task.completed) && isToday(parseISO(task.due_date_c || task.dueDate))).length;
+const overdue = tasks.filter(task => !(task.completed_c || task.completed) && safeParseISO(task.due_date_c || task.dueDate) < now).length;
+    const today = tasks.filter(task => !(task.completed_c || task.completed) && safeIsToday(safeParseISO(task.due_date_c || task.dueDate))).length;
     const completed = tasks.filter(task => task.completed_c || task.completed).length;
     const pending = tasks.filter(task => !task.completed).length;
 

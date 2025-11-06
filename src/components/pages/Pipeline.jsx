@@ -1,16 +1,24 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import DealCard from "@/components/molecules/DealCard";
-import DealModal from "@/components/organisms/DealModal";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { dealService } from "@/services/api/dealService";
 import { contactService } from "@/services/api/contactService";
 import { activityService } from "@/services/api/activityService";
 import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import DealModal from "@/components/organisms/DealModal";
+import DealCard from "@/components/molecules/DealCard";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+// Utility function to safely convert date to ISO string
+const safeToISOString = (date = new Date()) => {
+  try {
+    return date instanceof Date ? date.toISOString() : new Date().toISOString();
+  } catch (error) {
+    return new Date().toISOString();
+  }
+};
 
 const Pipeline = () => {
   const [deals, setDeals] = useState([]);
@@ -95,7 +103,7 @@ const handleSaveDeal = async (dealData) => {
           deal_id_c: selectedDeal.Id,
           type_c: "deal",
           description_c: `Deal updated: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
-          timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
         });
         
         setDeals(prev =>
@@ -115,7 +123,7 @@ const handleSaveDeal = async (dealData) => {
           deal_id_c: newDeal.Id,
           type_c: "deal",
           description_c: `New deal created: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
-          timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
         });
         
         setDeals(prev => [...prev, newDeal]);
@@ -151,7 +159,7 @@ const handleStageDrop = async (targetStage) => {
         deal_id_c: draggedDeal.Id,
         type_c: "deal",
         description_c: `Deal moved to ${targetStage}: ${draggedDeal.title_c || draggedDeal.title}`,
-        timestamp_c: new Date().toISOString(),
+timestamp_c: safeToISOString(),
       });
       
       setDeals(prev =>
