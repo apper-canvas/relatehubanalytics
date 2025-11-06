@@ -44,6 +44,18 @@
             "rule": "authenticated"
           }
         ]
+}
+    }
+  },
+  "/quotes": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Quotes page is public",
+            "rule": "public"
+          }
+        ]
       }
     }
   },

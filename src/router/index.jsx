@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import Root from "@/layouts/Root";
+import React, { Suspense, lazy } from "react";
 import Layout from "@/components/organisms/Layout";
+import Root from "@/layouts/Root";
 import { getRouteConfig } from "@/router/route.utils";
 
 // Lazy load all page components
@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import("@/components/pages/Dashboard"));
 const Contacts = lazy(() => import("@/components/pages/Contacts"));
 const Pipeline = lazy(() => import("@/components/pages/Pipeline"));
 const Tasks = lazy(() => import("@/components/pages/Tasks"));
+const Quotes = lazy(() => import("@/components/pages/Quotes"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
 const Login = lazy(() => import("@/components/pages/Login"));
 const Signup = lazy(() => import("@/components/pages/Signup"));
@@ -69,6 +70,7 @@ const mainRoutes = [
     element: <Contacts />
   }),
   createRoute({
+createRoute({
     path: "pipeline", 
     element: <Pipeline />
   }),
@@ -77,10 +79,13 @@ const mainRoutes = [
     element: <Tasks />
   }),
   createRoute({
+    path: "quotes",
+    element: <Quotes />
+  }),
+  createRoute({
     path: "*",
     element: <NotFound />
   }),
-];
 
 const routes = [
   {
