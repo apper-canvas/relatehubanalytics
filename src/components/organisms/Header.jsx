@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useAuth } from "@/layouts/Root";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-
-const Header = () => {
+const Header = ({ onAddContact, onAddDeal, onAddTask }) => {
+  const { logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,8 +16,6 @@ const Header = () => {
     { name: "Pipeline", path: "/pipeline", icon: "GitBranch" },
     { name: "Tasks", path: "/tasks", icon: "CheckSquare" },
   ];
-
-
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
@@ -53,8 +52,17 @@ const Header = () => {
             })}
           </nav>
 
-          {/* Quick Add Button */}
-<div className="flex items-center space-x-4">
+          {/* User Actions */}
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              className="text-red-600 hover:bg-red-50 hover:text-red-700"
+            >
+              <ApperIcon name="LogOut" className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
 
             {/* Mobile Menu Button */}
             <button

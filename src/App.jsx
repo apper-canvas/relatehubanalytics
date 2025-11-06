@@ -1,11 +1,12 @@
 import { RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { router } from "@/router";
-import { alertService } from "@/services/api/alertService";
+import { store } from "@/store";
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
@@ -20,7 +21,7 @@ function App() {
         theme="light"
         style={{ zIndex: 9999 }}
       />
-    </>
+    </Provider>
   );
 }
 

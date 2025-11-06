@@ -6,13 +6,13 @@ import FormField from "@/components/molecules/FormField";
 import { toast } from "react-toastify";
 
 const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    tags: "",
-    notes: "",
+const [formData, setFormData] = useState({
+    name_c: "",
+    company_c: "",
+    email_c: "",
+    phone_c: "",
+    tags_c: "",
+    notes_c: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -20,13 +20,13 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
 
   useEffect(() => {
     if (contact) {
-      setFormData({
-        name: contact.name || "",
-        company: contact.company || "",
-        email: contact.email || "",
-        phone: contact.phone || "",
-        tags: contact.tags ? contact.tags.join(", ") : "",
-        notes: contact.notes || "",
+setFormData({
+        name_c: contact.name_c || contact.name || "",
+        company_c: contact.company_c || contact.company || "",
+        email_c: contact.email_c || contact.email || "",
+        phone_c: contact.phone_c || contact.phone || "",
+        tags_c: (contact.tags_c || contact.tags) ? (typeof (contact.tags_c || contact.tags) === 'string' ? contact.tags_c || contact.tags : (contact.tags_c || contact.tags).join(", ")) : "",
+        notes_c: contact.notes_c || contact.notes || "",
       });
     } else {
       setFormData({
@@ -72,8 +72,8 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
     setIsLoading(true);
     try {
       const contactData = {
-        ...formData,
-        tags: formData.tags
+...formData,
+        tags_c: formData.tags_c
           .split(",")
           .map(tag => tag.trim())
           .filter(tag => tag.length > 0),
@@ -124,27 +124,27 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
           <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[70vh]">
             <FormField
               label="Name"
-              value={formData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              error={errors.name}
+value={formData.name_c}
+              onChange={(e) => handleChange("name_c", e.target.value)}
+              error={errors.name_c}
               required
               placeholder="Enter contact name"
             />
 
             <FormField
               label="Company"
-              value={formData.company}
-              onChange={(e) => handleChange("company", e.target.value)}
-              error={errors.company}
+              value={formData.company_c}
+              onChange={(e) => handleChange("company_c", e.target.value)}
+              error={errors.company_c}
               placeholder="Enter company name"
             />
 
             <FormField
               label="Email"
               type="email"
-              value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              error={errors.email}
+              value={formData.email_c}
+              onChange={(e) => handleChange("email_c", e.target.value)}
+              error={errors.email_c}
               required
               placeholder="Enter email address"
             />
@@ -152,27 +152,27 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
             <FormField
               label="Phone"
               type="tel"
-              value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
-              error={errors.phone}
+              value={formData.phone_c}
+              onChange={(e) => handleChange("phone_c", e.target.value)}
+              error={errors.phone_c}
               required
               placeholder="Enter phone number"
             />
 
             <FormField
               label="Tags"
-              value={formData.tags}
-              onChange={(e) => handleChange("tags", e.target.value)}
-              error={errors.tags}
+              value={formData.tags_c}
+              onChange={(e) => handleChange("tags_c", e.target.value)}
+              error={errors.tags_c}
               placeholder="Enter tags separated by commas"
             />
 
             <FormField
               label="Notes"
               type="textarea"
-              value={formData.notes}
-              onChange={(e) => handleChange("notes", e.target.value)}
-              error={errors.notes}
+              value={formData.notes_c}
+              onChange={(e) => handleChange("notes_c", e.target.value)}
+              error={errors.notes_c}
               placeholder="Enter any additional notes"
             />
 

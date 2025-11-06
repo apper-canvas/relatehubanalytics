@@ -13,11 +13,11 @@ const ContactCard = ({ contact, onEdit, onDelete, onViewDetails }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-semibold text-lg">
-            {contact.name.charAt(0).toUpperCase()}
+{(contact.name_c || contact.name).charAt(0).toUpperCase()}
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{contact.name}</h3>
-            <p className="text-sm text-gray-600">{contact.company}</p>
+            <h3 className="font-semibold text-gray-900">{contact.name_c || contact.name}</h3>
+            <p className="text-sm text-gray-600">{contact.company_c || contact.company}</p>
           </div>
         </div>
         
@@ -44,17 +44,17 @@ const ContactCard = ({ contact, onEdit, onDelete, onViewDetails }) => {
       <div className="space-y-2 mb-4">
         <div className="flex items-center space-x-2 text-sm text-gray-600">
           <ApperIcon name="Mail" className="h-4 w-4" />
-          <span>{contact.email}</span>
+<span>{contact.email_c || contact.email}</span>
         </div>
         <div className="flex items-center space-x-2 text-sm text-gray-600">
           <ApperIcon name="Phone" className="h-4 w-4" />
-          <span>{contact.phone}</span>
+          <span>{contact.phone_c || contact.phone}</span>
         </div>
       </div>
 
-      {contact.tags && contact.tags.length > 0 && (
+{(contact.tags_c || contact.tags) && (typeof (contact.tags_c || contact.tags) === 'string' ? (contact.tags_c || contact.tags).split(',').map(tag => tag.trim()) : (contact.tags_c || contact.tags)).length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
-          {contact.tags.map((tag, index) => (
+          {(typeof (contact.tags_c || contact.tags) === 'string' ? (contact.tags_c || contact.tags).split(',').map(tag => tag.trim()) : (contact.tags_c || contact.tags)).map((tag, index) => (
             <Badge key={index} variant="primary" className="text-xs">
               {tag}
             </Badge>
@@ -63,7 +63,7 @@ const ContactCard = ({ contact, onEdit, onDelete, onViewDetails }) => {
       )}
 
       <div className="flex items-center justify-between text-sm text-gray-500">
-        <span>Added {format(new Date(contact.createdAt), "MMM d, yyyy")}</span>
+<span>Added {format(new Date(contact.CreatedOn || contact.createdAt), "MMM d, yyyy")}</span>
         <Button
           variant="ghost"
           size="sm"

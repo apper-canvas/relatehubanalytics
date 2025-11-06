@@ -86,36 +86,36 @@ const Pipeline = () => {
     setIsModalOpen(true);
   };
 
-  const handleSaveDeal = async (dealData) => {
+const handleSaveDeal = async (dealData) => {
     try {
       if (selectedDeal) {
         await dealService.update(selectedDeal.Id, dealData);
         await activityService.create({
-          contactId: parseInt(dealData.contactId),
-          dealId: selectedDeal.Id,
-          type: "deal",
-          description: `Deal updated: ${dealData.title} - $${dealData.value}`,
-          timestamp: new Date().toISOString(),
+          contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId),
+          deal_id_c: selectedDeal.Id,
+          type_c: "deal",
+          description_c: `Deal updated: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
+          timestamp_c: new Date().toISOString(),
         });
         
         setDeals(prev =>
           prev.map(deal =>
             deal.Id === selectedDeal.Id
-              ? { ...deal, ...dealData, contactId: parseInt(dealData.contactId), updatedAt: new Date().toISOString() }
+              ? { ...deal, ...dealData, contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId), ModifiedOn: new Date().toISOString() }
               : deal
           )
         );
       } else {
         const newDeal = await dealService.create({
           ...dealData,
-          contactId: parseInt(dealData.contactId),
+          contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId),
         });
         await activityService.create({
-          contactId: parseInt(dealData.contactId),
-          dealId: newDeal.Id,
-          type: "deal",
-          description: `New deal created: ${dealData.title} - $${dealData.value}`,
-          timestamp: new Date().toISOString(),
+          contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId),
+          deal_id_c: newDeal.Id,
+          type_c: "deal",
+          description_c: `New deal created: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
+          timestamp_c: new Date().toISOString(),
         });
         
         setDeals(prev => [...prev, newDeal]);
@@ -141,23 +141,23 @@ const Pipeline = () => {
     setDraggedDeal(null);
   };
 
-  const handleStageDrop = async (targetStage) => {
-    if (!draggedDeal || draggedDeal.stage === targetStage) return;
+const handleStageDrop = async (targetStage) => {
+    if (!draggedDeal || (draggedDeal.stage_c || draggedDeal.stage) === targetStage) return;
 
     try {
-      await dealService.update(draggedDeal.Id, { stage: targetStage });
+      await dealService.update(draggedDeal.Id, { stage_c: targetStage });
       await activityService.create({
-        contactId: draggedDeal.contactId,
-        dealId: draggedDeal.Id,
-        type: "deal",
-        description: `Deal moved to ${targetStage}: ${draggedDeal.title}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: draggedDeal.contact_id_c || draggedDeal.contactId,
+        deal_id_c: draggedDeal.Id,
+        type_c: "deal",
+        description_c: `Deal moved to ${targetStage}: ${draggedDeal.title_c || draggedDeal.title}`,
+        timestamp_c: new Date().toISOString(),
       });
       
       setDeals(prev =>
         prev.map(deal =>
           deal.Id === draggedDeal.Id
-            ? { ...deal, stage: targetStage, updatedAt: new Date().toISOString() }
+            ? { ...deal, stage_c: targetStage, ModifiedOn: new Date().toISOString() }
             : deal
         )
       );

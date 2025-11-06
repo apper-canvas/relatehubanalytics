@@ -8,12 +8,12 @@ import { contactService } from "@/services/api/contactService";
 
 const DealModal = ({ isOpen, onClose, deal, onSave }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    contactId: "",
-    value: "",
-    stage: "Lead",
-    probability: "",
-    expectedCloseDate: "",
+title_c: "",
+    contact_id_c: "",
+    value_c: "",
+    stage_c: "Lead",
+    probability_c: "",
+    expected_close_date_c: "",
   });
 
   const [contacts, setContacts] = useState([]);
@@ -39,12 +39,12 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
   useEffect(() => {
     if (deal) {
       setFormData({
-        title: deal.title || "",
-        contactId: deal.contactId || "",
-        value: deal.value?.toString() || "",
-        stage: deal.stage || "Lead",
-        probability: deal.probability?.toString() || "",
-        expectedCloseDate: deal.expectedCloseDate || "",
+title_c: deal.title_c || deal.title || "",
+        contact_id_c: deal.contact_id_c || deal.contactId || "",
+        value_c: (deal.value_c || deal.value)?.toString() || "",
+        stage_c: deal.stage_c || deal.stage || "Lead",
+        probability_c: (deal.probability_c || deal.probability)?.toString() || "",
+        expected_close_date_c: deal.expected_close_date_c || deal.expectedCloseDate || "",
       });
     } else {
       setFormData({
@@ -112,9 +112,9 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
     setIsLoading(true);
     try {
       const dealData = {
-        ...formData,
-        value: parseFloat(formData.value),
-        probability: parseInt(formData.probability),
+...formData,
+        value_c: parseFloat(formData.value_c),
+        probability_c: parseInt(formData.probability_c),
       };
 
       await onSave(dealData);
@@ -160,11 +160,11 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[70vh]">
-            <FormField
+<FormField
               label="Deal Title"
-              value={formData.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-              error={errors.title}
+              value={formData.title_c}
+              onChange={(e) => handleChange("title_c", e.target.value)}
+              error={errors.title_c}
               required
               placeholder="Enter deal title"
             />
@@ -172,22 +172,22 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
             <FormField
               label="Contact"
               type="select"
-              value={formData.contactId}
-              onChange={(e) => handleChange("contactId", e.target.value)}
-              error={errors.contactId}
+              value={formData.contact_id_c}
+              onChange={(e) => handleChange("contact_id_c", e.target.value)}
+              error={errors.contact_id_c}
               required
               options={contacts.map(contact => ({
                 value: contact.Id.toString(),
-                label: `${contact.name} (${contact.company})`,
+                label: `${contact.name_c || contact.name} (${contact.company_c || contact.company})`,
               }))}
             />
 
             <FormField
               label="Deal Value ($)"
               type="number"
-              value={formData.value}
-              onChange={(e) => handleChange("value", e.target.value)}
-              error={errors.value}
+              value={formData.value_c}
+              onChange={(e) => handleChange("value_c", e.target.value)}
+              error={errors.value_c}
               required
               placeholder="Enter deal value"
               min="0"
@@ -197,9 +197,9 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
             <FormField
               label="Stage"
               type="select"
-              value={formData.stage}
-              onChange={(e) => handleChange("stage", e.target.value)}
-              error={errors.stage}
+              value={formData.stage_c}
+              onChange={(e) => handleChange("stage_c", e.target.value)}
+              error={errors.stage_c}
               required
               options={stages}
             />
@@ -207,9 +207,9 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
             <FormField
               label="Probability (%)"
               type="number"
-              value={formData.probability}
-              onChange={(e) => handleChange("probability", e.target.value)}
-              error={errors.probability}
+              value={formData.probability_c}
+              onChange={(e) => handleChange("probability_c", e.target.value)}
+              error={errors.probability_c}
               required
               placeholder="Enter probability (0-100)"
               min="0"
@@ -219,9 +219,9 @@ const DealModal = ({ isOpen, onClose, deal, onSave }) => {
             <FormField
               label="Expected Close Date"
               type="date"
-              value={formData.expectedCloseDate}
-              onChange={(e) => handleChange("expectedCloseDate", e.target.value)}
-              error={errors.expectedCloseDate}
+              value={formData.expected_close_date_c}
+              onChange={(e) => handleChange("expected_close_date_c", e.target.value)}
+              error={errors.expected_close_date_c}
               required
             />
 

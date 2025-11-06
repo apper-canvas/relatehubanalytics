@@ -17,7 +17,7 @@ class AlertService {
     await this.delay();
     
     try {
-      const [tasks, activities, contacts] = await Promise.all([
+const [tasks, activities, contacts] = await Promise.all([
         taskService.getAll(),
         activityService.getAll(),
         contactService.getAll()
@@ -27,10 +27,10 @@ class AlertService {
       const now = new Date();
 
       // Task-based alerts
-      tasks.forEach(task => {
-        if (task.completed) return;
+tasks.forEach(task => {
+        if (task.completed_c) return;
 
-        const dueDate = new Date(task.dueDate);
+        const dueDate = new Date(task.due_date_c);
         const alertKey = `task-${task.Id}`;
 
         if (this.dismissedAlerts.has(alertKey)) return;
@@ -42,10 +42,10 @@ class AlertService {
             type: 'task_overdue',
             priority: 'high',
             title: 'Overdue Task',
-            message: `"${task.title}" was due ${format(dueDate, 'MMM d, yyyy')}`,
+message: `"${task.title_c}" was due ${format(dueDate, 'MMM d, yyyy')}`,
             taskId: task.Id,
             task: task,
-            timestamp: task.dueDate,
+            timestamp: task.due_date_c,
             actions: [
               { type: 'complete', label: 'Mark Complete' },
               { type: 'dismiss', label: 'Dismiss' }
@@ -59,10 +59,10 @@ class AlertService {
             type: 'task_due_today',
             priority: 'medium',
             title: 'Due Today',
-            message: `"${task.title}" is due today`,
+message: `"${task.title_c}" is due today`,
             taskId: task.Id,
             task: task,
-            timestamp: task.dueDate,
+            timestamp: task.due_date_c,
             actions: [
               { type: 'complete', label: 'Mark Complete' },
               { type: 'dismiss', label: 'Dismiss' }
@@ -76,10 +76,10 @@ class AlertService {
             type: 'task_due_tomorrow',
             priority: 'low',
             title: 'Due Tomorrow',
-            message: `"${task.title}" is due tomorrow`,
+message: `"${task.title_c}" is due tomorrow`,
             taskId: task.Id,
             task: task,
-            timestamp: task.dueDate,
+            timestamp: task.due_date_c,
             actions: [
               { type: 'dismiss', label: 'Dismiss' }
             ]
@@ -89,20 +89,20 @@ class AlertService {
 
       // Activity-based alerts (follow-ups needed)
       const sevenDaysAgo = subDays(now, 7);
-      const recentActivities = activities
+const recentActivities = activities
         .filter(activity => {
-          const activityDate = new Date(activity.timestamp);
+          const activityDate = new Date(activity.timestamp_c);
           return activityDate >= sevenDaysAgo && activityDate <= now;
         })
-        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+.sort((a, b) => new Date(b.timestamp_c) - new Date(a.timestamp_c));
 
       // Group by contact and suggest follow-ups for recent activities
       const contactActivityMap = {};
-      recentActivities.forEach(activity => {
-        if (!contactActivityMap[activity.contactId]) {
-          contactActivityMap[activity.contactId] = [];
+recentActivities.forEach(activity => {
+        if (!contactActivityMap[activity.contact_id_c]) {
+          contactActivityMap[activity.contact_id_c] = [];
         }
-        contactActivityMap[activity.contactId].push(activity);
+        contactActivityMap[activity.contact_id_c].push(activity);
       });
 
       Object.entries(contactActivityMap).forEach(([contactId, contactActivities]) => {
@@ -117,12 +117,12 @@ class AlertService {
             Id: `follow-up-${contactId}`,
             type: 'contact_follow_up',
             priority: 'medium',
-            title: 'Follow-up Needed',
-            message: `${contact.name} - ${contactActivities.length} recent ${contactActivities.length === 1 ? 'activity' : 'activities'}`,
+title: 'Follow-up Needed',
+            message: `${contact.name_c} - ${contactActivities.length} recent ${contactActivities.length === 1 ? 'activity' : 'activities'}`,
             contactId: parseInt(contactId),
             contact: contact,
             activities: contactActivities,
-            timestamp: latestActivity.timestamp,
+            timestamp: latestActivity.timestamp_c,
             actions: [
               { type: 'dismiss', label: 'Dismiss' }
             ]
@@ -152,9 +152,9 @@ class AlertService {
   }
 
   async completeTask(taskId) {
-    await this.delay(200);
-    try {
-      await taskService.update(taskId, { completed: true });
+try {
+      await taskService.update(taskId, { completed_c: true });
+      this.dismissedAlerts.add(`task-${taskId}`);
       this.dismissedAlerts.add(`task-${taskId}`);
       return { success: true };
     } catch (error) {

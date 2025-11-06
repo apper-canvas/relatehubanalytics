@@ -8,9 +8,9 @@ import { contactService } from "@/services/api/contactService";
 
 const TaskModal = ({ isOpen, onClose, task, onSave }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    contactId: "",
-    dueDate: "",
+title_c: "",
+    contact_id_c: "",
+    due_date_c: "",
   });
 
   const [contacts, setContacts] = useState([]);
@@ -26,10 +26,10 @@ const TaskModal = ({ isOpen, onClose, task, onSave }) => {
 
   useEffect(() => {
     if (task) {
-      setFormData({
-        title: task.title || "",
-        contactId: task.contactId || "",
-        dueDate: task.dueDate || "",
+setFormData({
+        title_c: task.title_c || task.title || "",
+        contact_id_c: task.contact_id_c || task.contactId || "",
+        due_date_c: task.due_date_c || task.dueDate || "",
       });
     } else {
       setFormData({
@@ -125,10 +125,10 @@ const TaskModal = ({ isOpen, onClose, task, onSave }) => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[70vh]">
             <FormField
-              label="Task Title"
-              value={formData.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-              error={errors.title}
+label="Task Title"
+              value={formData.title_c}
+              onChange={(e) => handleChange("title_c", e.target.value)}
+              error={errors.title_c}
               required
               placeholder="Enter task title"
             />
@@ -136,22 +136,22 @@ const TaskModal = ({ isOpen, onClose, task, onSave }) => {
             <FormField
               label="Contact"
               type="select"
-              value={formData.contactId}
-              onChange={(e) => handleChange("contactId", e.target.value)}
-              error={errors.contactId}
+              value={formData.contact_id_c}
+              onChange={(e) => handleChange("contact_id_c", e.target.value)}
+              error={errors.contact_id_c}
               required
               options={contacts.map(contact => ({
                 value: contact.Id.toString(),
-                label: `${contact.name} (${contact.company})`,
+                label: `${contact.name_c || contact.name} (${contact.company_c || contact.company})`,
               }))}
             />
 
             <FormField
               label="Due Date"
               type="date"
-              value={formData.dueDate}
-              onChange={(e) => handleChange("dueDate", e.target.value)}
-              error={errors.dueDate}
+              value={formData.due_date_c}
+              onChange={(e) => handleChange("due_date_c", e.target.value)}
+              error={errors.due_date_c}
               required
             />
 

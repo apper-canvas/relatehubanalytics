@@ -5,7 +5,7 @@ import Button from "@/components/atoms/Button";
 import { cn } from "@/utils/cn";
 
 const TaskItem = ({ task, contact, onToggleComplete, onEdit, onDelete }) => {
-  const isOverdue = !task.completed && isAfter(new Date(), new Date(task.dueDate));
+const isOverdue = !(task.completed_c || task.completed) && isAfter(new Date(), new Date(task.due_date_c || task.dueDate));
 
   return (
     <motion.div
@@ -26,18 +26,18 @@ const TaskItem = ({ task, contact, onToggleComplete, onEdit, onDelete }) => {
         onClick={() => onToggleComplete(task.Id)}
         className={cn(
           "h-6 w-6 rounded-full border-2 flex items-center justify-center transition-colors",
-          task.completed
+(task.completed_c || task.completed)
             ? "bg-success border-success text-white"
             : "border-gray-300 hover:border-primary"
         )}
       >
-        {task.completed && <ApperIcon name="Check" className="h-4 w-4" />}
+{(task.completed_c || task.completed) && <ApperIcon name="Check" className="h-4 w-4" />}
       </motion.button>
 
       <div className="flex-1 min-w-0">
         <h4 className={cn(
           "font-medium text-sm",
-          task.completed ? "text-gray-500 line-through" : "text-gray-900"
+(task.completed_c || task.completed) ? "text-gray-500 line-through" : "text-gray-900"
         )}>
           {task.title}
         </h4>
@@ -50,11 +50,11 @@ const TaskItem = ({ task, contact, onToggleComplete, onEdit, onDelete }) => {
           )}
           <div className={cn(
             "flex items-center space-x-1 text-xs",
-            isOverdue && !task.completed ? "text-error" : "text-gray-500"
+isOverdue && !(task.completed_c || task.completed) ? "text-error" : "text-gray-500"
           )}>
             <ApperIcon name="Calendar" className="h-3 w-3" />
-            <span>{format(new Date(task.dueDate), "MMM d, yyyy")}</span>
-            {isOverdue && !task.completed && (
+            <span>{format(new Date(task.due_date_c || task.dueDate), "MMM d, yyyy")}</span>
+            {isOverdue && !(task.completed_c || task.completed) && (
               <span className="text-error font-medium ml-1">(Overdue)</span>
             )}
           </div>

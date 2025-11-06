@@ -47,15 +47,15 @@ const ContactDetailsModal = ({ isOpen, onClose, contact }) => {
           {/* Content */}
           <div className="p-6 space-y-6 overflow-y-auto max-h-[70vh]">
             {/* Name */}
-            <div className="space-y-2">
+<div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Name</label>
-              <p className="text-lg font-semibold text-gray-900">{contact.name}</p>
+              <p className="text-lg font-semibold text-gray-900">{contact.name_c || contact.name}</p>
             </div>
 
             {/* Company */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Company</label>
-              <p className="text-gray-900">{contact.company || "Not specified"}</p>
+              <p className="text-gray-900">{contact.company_c || contact.company || "Not specified"}</p>
             </div>
 
             {/* Contact Information */}
@@ -65,10 +65,10 @@ const ContactDetailsModal = ({ isOpen, onClose, contact }) => {
                 <div className="flex items-center space-x-2">
                   <ApperIcon name="Mail" className="h-4 w-4 text-gray-400" />
                   <a 
-                    href={`mailto:${contact.email}`}
+                    href={`mailto:${contact.email_c || contact.email}`}
                     className="text-primary hover:text-blue-700 transition-colors"
                   >
-                    {contact.email}
+                    {contact.email_c || contact.email}
                   </a>
                 </div>
               </div>
@@ -78,10 +78,10 @@ const ContactDetailsModal = ({ isOpen, onClose, contact }) => {
                 <div className="flex items-center space-x-2">
                   <ApperIcon name="Phone" className="h-4 w-4 text-gray-400" />
                   <a 
-                    href={`tel:${contact.phone}`}
+                    href={`tel:${contact.phone_c || contact.phone}`}
                     className="text-primary hover:text-blue-700 transition-colors"
                   >
-                    {formatPhone(contact.phone)}
+                    {formatPhone(contact.phone_c || contact.phone)}
                   </a>
                 </div>
               </div>
@@ -91,8 +91,8 @@ const ContactDetailsModal = ({ isOpen, onClose, contact }) => {
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Tags</label>
               <div className="flex flex-wrap gap-2">
-                {contact.tags && contact.tags.length > 0 ? (
-                  contact.tags.map((tag, index) => (
+                {(contact.tags_c || contact.tags) && (typeof (contact.tags_c || contact.tags) === 'string' ? (contact.tags_c || contact.tags).split(',').map(tag => tag.trim()) : (contact.tags_c || contact.tags)).length > 0 ? (
+                  (typeof (contact.tags_c || contact.tags) === 'string' ? (contact.tags_c || contact.tags).split(',').map(tag => tag.trim()) : (contact.tags_c || contact.tags)).map((tag, index) => (
                     <Badge key={index} variant="secondary">
                       {tag}
                     </Badge>
@@ -108,7 +108,7 @@ const ContactDetailsModal = ({ isOpen, onClose, contact }) => {
               <label className="text-sm font-medium text-gray-700">Notes</label>
               <div className="bg-gray-50 rounded-lg p-4 min-h-[80px]">
                 <p className="text-gray-900 whitespace-pre-wrap">
-                  {contact.notes || "No notes available"}
+                  {contact.notes_c || contact.notes || "No notes available"}
                 </p>
               </div>
             </div>

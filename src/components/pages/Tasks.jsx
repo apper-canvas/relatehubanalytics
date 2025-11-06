@@ -68,10 +68,10 @@ const Tasks = () => {
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(task => {
-        const contact = getContactById(task.contactId);
+const contact = getContactById(task.contact_id_c || task.contactId);
         return (
-          task.title.toLowerCase().includes(searchLower) ||
-          (contact && contact.name.toLowerCase().includes(searchLower))
+          (task.title_c || task.title).toLowerCase().includes(searchLower) ||
+          (contact && (contact.name_c || contact.name).toLowerCase().includes(searchLower))
         );
       });
     }
@@ -81,17 +81,17 @@ const Tasks = () => {
       const now = new Date();
       
       filtered = filtered.filter(task => {
-        const dueDate = parseISO(task.dueDate);
+const dueDate = parseISO(task.due_date_c || task.dueDate);
         
         switch (filter) {
           case "today":
-            return isToday(dueDate) && !task.completed;
+            return isToday(dueDate) && !(task.completed_c || task.completed);
           case "overdue":
-            return dueDate < now && !task.completed;
+            return dueDate < now && !(task.completed_c || task.completed);
           case "completed":
-            return task.completed;
+            return task.completed_c || task.completed;
           case "pending":
-            return !task.completed;
+            return !(task.completed_c || task.completed);
           default:
             return true;
         }
@@ -100,16 +100,16 @@ const Tasks = () => {
 
     // Sort tasks: overdue first, then by due date
     filtered.sort((a, b) => {
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1; // Completed tasks last
+if ((a.completed_c || a.completed) !== (b.completed_c || b.completed)) {
+        return (a.completed_c || a.completed) ? 1 : -1; // Completed tasks last
       }
       
-      const aDate = parseISO(a.dueDate);
-      const bDate = parseISO(b.dueDate);
+      const aDate = parseISO(a.due_date_c || a.dueDate);
+      const bDate = parseISO(b.due_date_c || b.dueDate);
       const now = new Date();
       
-      const aOverdue = aDate < now && !a.completed;
-      const bOverdue = bDate < now && !b.completed;
+      const aOverdue = aDate < now && !(a.completed_c || a.completed);
+      const bOverdue = bDate < now && !(b.completed_c || b.completed);
       
       if (aOverdue !== bOverdue) {
         return aOverdue ? -1 : 1; // Overdue tasks first
@@ -147,12 +147,12 @@ const Tasks = () => {
     try {
       const task = tasks.find(t => t.Id === taskId);
       await taskService.delete(taskId);
-      await activityService.create({
-        contactId: task.contactId,
-        dealId: null,
-        type: "task",
-        description: `Task deleted: ${task.title}`,
-        timestamp: new Date().toISOString(),
+await activityService.create({
+        contact_id_c: task.contact_id_c || task.contactId,
+        deal_id_c: null,
+        type_c: "task",
+        description_c: `Task deleted: ${task.title_c || task.title}`,
+        timestamp_c: new Date().toISOString(),
       });
       
       setTasks(prev => prev.filter(task => task.Id !== taskId));
@@ -168,20 +168,20 @@ const Tasks = () => {
     if (!task) return;
 
     try {
-      const updatedTask = { ...task, completed: !task.completed };
+const updatedTask = { ...task, completed_c: !(task.completed_c || task.completed) };
       await taskService.update(taskId, updatedTask);
-      await activityService.create({
-        contactId: task.contactId,
-        dealId: null,
-        type: "task",
-        description: `Task ${updatedTask.completed ? 'completed' : 'reopened'}: ${task.title}`,
-        timestamp: new Date().toISOString(),
+await activityService.create({
+        contact_id_c: task.contact_id_c || task.contactId,
+        deal_id_c: null,
+        type_c: "task",
+        description_c: `Task ${updatedTask.completed_c ? 'completed' : 'reopened'}: ${task.title_c || task.title}`,
+        timestamp_c: new Date().toISOString(),
       });
       
       setTasks(prev =>
-        prev.map(t =>
+prev.map(t =>
           t.Id === taskId
-            ? { ...t, completed: !t.completed, updatedAt: new Date().toISOString() }
+            ? { ...t, completed_c: !(t.completed_c || t.completed), ModifiedOn: new Date().toISOString() }
             : t
         )
       );
@@ -201,33 +201,33 @@ const Tasks = () => {
     try {
       if (selectedTask) {
         await taskService.update(selectedTask.Id, taskData);
-        await activityService.create({
-          contactId: parseInt(taskData.contactId),
-          dealId: null,
-          type: "task",
-          description: `Task updated: ${taskData.title}`,
-          timestamp: new Date().toISOString(),
+await activityService.create({
+          contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId),
+          deal_id_c: null,
+          type_c: "task",
+          description_c: `Task updated: ${taskData.title_c || taskData.title}`,
+          timestamp_c: new Date().toISOString(),
         });
         
         setTasks(prev =>
-          prev.map(task =>
+prev.map(task =>
             task.Id === selectedTask.Id
-              ? { ...task, ...taskData, contactId: parseInt(taskData.contactId), updatedAt: new Date().toISOString() }
+              ? { ...task, ...taskData, contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId), ModifiedOn: new Date().toISOString() }
               : task
           )
         );
       } else {
-        const newTask = await taskService.create({
+const newTask = await taskService.create({
           ...taskData,
-          contactId: parseInt(taskData.contactId),
-          completed: false,
+          contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId),
+          completed_c: false,
         });
-        await activityService.create({
-          contactId: parseInt(taskData.contactId),
-          dealId: null,
-          type: "task",
-          description: `New task created: ${taskData.title}`,
-          timestamp: new Date().toISOString(),
+await activityService.create({
+          contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId),
+          deal_id_c: null,
+          type_c: "task",
+          description_c: `New task created: ${taskData.title_c || taskData.title}`,
+          timestamp_c: new Date().toISOString(),
         });
         
         setTasks(prev => [...prev, newTask]);
@@ -247,9 +247,9 @@ const Tasks = () => {
 
   const getTaskStats = () => {
     const now = new Date();
-    const overdue = tasks.filter(task => !task.completed && parseISO(task.dueDate) < now).length;
-    const today = tasks.filter(task => !task.completed && isToday(parseISO(task.dueDate))).length;
-    const completed = tasks.filter(task => task.completed).length;
+const overdue = tasks.filter(task => !(task.completed_c || task.completed) && parseISO(task.due_date_c || task.dueDate) < now).length;
+    const today = tasks.filter(task => !(task.completed_c || task.completed) && isToday(parseISO(task.due_date_c || task.dueDate))).length;
+    const completed = tasks.filter(task => task.completed_c || task.completed).length;
     const pending = tasks.filter(task => !task.completed).length;
 
     return { overdue, today, completed, pending };

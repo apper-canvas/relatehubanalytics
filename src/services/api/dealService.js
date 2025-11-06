@@ -1,67 +1,220 @@
-import dealsData from "@/services/mockData/deals.json";
+import { getApperClient } from "@/services/apperClient";
 
 class DealService {
-  constructor() {
-    this.deals = [...dealsData];
-  }
-
-  async delay() {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 200));
-  }
-
   async getAll() {
-    await this.delay();
-    return [...this.deals];
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
+      const response = await apperClient.fetchRecords('deal_c', {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "value_c"}},
+          {"field": {"Name": "stage_c"}},
+          {"field": {"Name": "probability_c"}},
+          {"field": {"Name": "expected_close_date_c"}},
+          {"field": {"Name": "contact_id_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "ModifiedOn"}}
+        ]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching deals:", error.message);
+      throw error;
+    }
   }
 
   async getById(id) {
-    await this.delay();
-    const deal = this.deals.find(deal => deal.Id === parseInt(id));
-    if (!deal) {
-      throw new Error(`Deal with Id ${id} not found`);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
+      const response = await apperClient.getRecordById('deal_c', parseInt(id), {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "title_c"}},
+          {"field": {"Name": "value_c"}},
+          {"field": {"Name": "stage_c"}},
+          {"field": {"Name": "probability_c"}},
+          {"field": {"Name": "expected_close_date_c"}},
+          {"field": {"Name": "contact_id_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "ModifiedOn"}}
+        ]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching deal ${id}:`, error.message);
+      throw error;
     }
-    return { ...deal };
   }
 
   async create(dealData) {
-    await this.delay();
-    const maxId = this.deals.length > 0 ? Math.max(...this.deals.map(d => d.Id)) : 0;
-    const newDeal = {
-      Id: maxId + 1,
-      ...dealData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    this.deals.push(newDeal);
-    return { ...newDeal };
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
+      // Only include updateable fields
+      const cleanData = {
+        title_c: dealData.title_c || dealData.title,
+        value_c: dealData.value_c || dealData.value,
+        stage_c: dealData.stage_c || dealData.stage,
+        probability_c: dealData.probability_c || dealData.probability,
+        expected_close_date_c: dealData.expected_close_date_c || dealData.expectedCloseDate,
+        contact_id_c: dealData.contact_id_c || dealData.contactId
+      };
+
+      // Remove undefined values
+      Object.keys(cleanData).forEach(key => {
+        if (cleanData[key] === undefined) {
+          delete cleanData[key];
+        }
+      });
+
+      // Ensure contact_id_c is integer if present
+      if (cleanData.contact_id_c) {
+        cleanData.contact_id_c = parseInt(cleanData.contact_id_c);
+      }
+
+      const response = await apperClient.createRecord('deal_c', {
+        records: [cleanData]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} deals:`, failed);
+          throw new Error('Failed to create deal');
+        }
+        
+        return successful[0]?.data;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Error creating deal:", error.message);
+      throw error;
+    }
   }
 
   async update(id, dealData) {
-    await this.delay();
-    const index = this.deals.findIndex(deal => deal.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error(`Deal with Id ${id} not found`);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
+      // Only include updateable fields
+      const cleanData = {
+        Id: parseInt(id),
+        title_c: dealData.title_c || dealData.title,
+        value_c: dealData.value_c || dealData.value,
+        stage_c: dealData.stage_c || dealData.stage,
+        probability_c: dealData.probability_c || dealData.probability,
+        expected_close_date_c: dealData.expected_close_date_c || dealData.expectedCloseDate,
+        contact_id_c: dealData.contact_id_c || dealData.contactId
+      };
+
+      // Remove undefined values (keep Id)
+      Object.keys(cleanData).forEach(key => {
+        if (key !== 'Id' && cleanData[key] === undefined) {
+          delete cleanData[key];
+        }
+      });
+
+      // Ensure contact_id_c is integer if present
+      if (cleanData.contact_id_c) {
+        cleanData.contact_id_c = parseInt(cleanData.contact_id_c);
+      }
+
+      const response = await apperClient.updateRecord('deal_c', {
+        records: [cleanData]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} deals:`, failed);
+          throw new Error('Failed to update deal');
+        }
+        
+        return successful[0]?.data;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating deal ${id}:`, error.message);
+      throw error;
     }
-    
-    this.deals[index] = {
-      ...this.deals[index],
-      ...dealData,
-      Id: parseInt(id),
-      updatedAt: new Date().toISOString(),
-    };
-    
-    return { ...this.deals[index] };
   }
 
   async delete(id) {
-    await this.delay();
-    const index = this.deals.findIndex(deal => deal.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error(`Deal with Id ${id} not found`);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
+      const response = await apperClient.deleteRecord('deal_c', {
+        RecordIds: [parseInt(id)]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} deals:`, failed);
+          throw new Error('Failed to delete deal');
+        }
+        
+        return successful.length > 0;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Error deleting deal ${id}:`, error.message);
+      throw error;
     }
-    
-    const deletedDeal = this.deals.splice(index, 1)[0];
-    return { ...deletedDeal };
   }
 }
 

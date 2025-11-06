@@ -34,22 +34,22 @@ const Layout = () => {
     const contact = modals.contact.data;
     
     if (contact) {
-      await contactService.update(contact.Id, contactData);
+await contactService.update(contact.Id, contactData);
       await activityService.create({
-        contactId: contact.Id,
-        dealId: null,
-        type: "note",
-        description: `Contact updated: ${contactData.name}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: contact.Id,
+        deal_id_c: null,
+        type_c: "note",
+        description_c: `Contact updated: ${contactData.name_c || contactData.name}`,
+        timestamp_c: new Date().toISOString(),
       });
     } else {
-      const newContact = await contactService.create(contactData);
+const newContact = await contactService.create(contactData);
       await activityService.create({
-        contactId: newContact.Id,
-        dealId: null,
-        type: "note",
-        description: `New contact added: ${contactData.name}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: newContact.Id,
+        deal_id_c: null,
+        type_c: "note",
+        description_c: `New contact added: ${contactData.name_c || contactData.name}`,
+        timestamp_c: new Date().toISOString(),
       });
     }
   };
@@ -58,22 +58,22 @@ const Layout = () => {
     const deal = modals.deal.data;
     
     if (deal) {
-      await dealService.update(deal.Id, dealData);
+await dealService.update(deal.Id, dealData);
       await activityService.create({
-        contactId: parseInt(dealData.contactId),
-        dealId: deal.Id,
-        type: "deal",
-        description: `Deal updated: ${dealData.title} - $${dealData.value}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId),
+        deal_id_c: deal.Id,
+        type_c: "deal",
+        description_c: `Deal updated: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
+        timestamp_c: new Date().toISOString(),
       });
     } else {
-      const newDeal = await dealService.create(dealData);
+const newDeal = await dealService.create(dealData);
       await activityService.create({
-        contactId: parseInt(dealData.contactId),
-        dealId: newDeal.Id,
-        type: "deal",
-        description: `New deal created: ${dealData.title} - $${dealData.value}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: parseInt(dealData.contact_id_c || dealData.contactId),
+        deal_id_c: newDeal.Id,
+        type_c: "deal",
+        description_c: `New deal created: ${dealData.title_c || dealData.title} - $${dealData.value_c || dealData.value}`,
+        timestamp_c: new Date().toISOString(),
       });
     }
   };
@@ -82,22 +82,22 @@ const Layout = () => {
     const task = modals.task.data;
     
     if (task) {
-      await taskService.update(task.Id, taskData);
+await taskService.update(task.Id, taskData);
       await activityService.create({
-        contactId: parseInt(taskData.contactId),
-        dealId: null,
-        type: "task",
-        description: `Task updated: ${taskData.title}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId),
+        deal_id_c: null,
+        type_c: "task",
+        description_c: `Task updated: ${taskData.title_c || taskData.title}`,
+        timestamp_c: new Date().toISOString(),
       });
     } else {
-      const newTask = await taskService.create(taskData);
+const newTask = await taskService.create(taskData);
       await activityService.create({
-        contactId: parseInt(taskData.contactId),
-        dealId: null,
-        type: "task",
-        description: `New task created: ${taskData.title}`,
-        timestamp: new Date().toISOString(),
+        contact_id_c: parseInt(taskData.contact_id_c || taskData.contactId),
+        deal_id_c: null,
+        type_c: "task",
+        description_c: `New task created: ${taskData.title_c || taskData.title}`,
+        timestamp_c: new Date().toISOString(),
       });
     }
   };

@@ -51,10 +51,9 @@ try {
       ]);
 
       // Calculate stats
-      const activeDeals = deals.filter(deal => !["Won", "Lost"].includes(deal.stage));
-      const pipelineValue = activeDeals.reduce((sum, deal) => sum + deal.value, 0);
-      const completedTasks = tasks.filter(task => task.completed).length;
-
+const activeDeals = deals.filter(deal => !["Won", "Lost"].includes(deal.stage_c || deal.stage));
+      const pipelineValue = activeDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value), 0);
+      const completedTasks = tasks.filter(task => task.completed_c || task.completed).length;
       setStats({
         totalContacts: contacts.length,
         totalDeals: activeDeals.length,
@@ -88,27 +87,28 @@ try {
     for (let i = 5; i >= 0; i--) {
       const date = subDays(new Date(), i * 30);
       months.push(format(date, 'MMM'));
-      const monthDeals = deals.filter(deal => 
-        new Date(deal.createdAt) <= date && !["Won", "Lost"].includes(deal.stage)
+const monthDeals = deals.filter(deal => 
+        new Date(deal.CreatedOn || deal.createdAt) <= date && !["Won", "Lost"].includes(deal.stage_c || deal.stage)
       );
-      pipelineValues.push(monthDeals.reduce((sum, deal) => sum + deal.value, 0));
+      pipelineValues.push(monthDeals.reduce((sum, deal) => sum + (deal.value_c || deal.value), 0));
     }
 
     // Deal Stages Distribution
-    const stageGroups = deals.reduce((acc, deal) => {
-      acc[deal.stage] = (acc[deal.stage] || 0) + 1;
+const stageGroups = deals.reduce((acc, deal) => {
+      const stage = deal.stage_c || deal.stage;
+      acc[stage] = (acc[stage] || 0) + 1;
       return acc;
     }, {});
 
     // Win Rate Analysis
-    const totalClosed = deals.filter(deal => ["Won", "Lost"].includes(deal.stage)).length;
-    const won = deals.filter(deal => deal.stage === "Won").length;
+const totalClosed = deals.filter(deal => ["Won", "Lost"].includes(deal.stage_c || deal.stage)).length;
+    const won = deals.filter(deal => (deal.stage_c || deal.stage) === "Won").length;
     const lost = deals.filter(deal => deal.stage === "Lost").length;
     
     // Deal Progression Funnel
-    const stages = ["Lead", "Qualified", "Proposal", "Negotiation", "Won"];
+const stages = ["Lead", "Qualified", "Proposal", "Negotiation", "Won"];
     const funnelData = stages.map(stage => 
-      deals.filter(deal => deal.stage === stage).length
+      deals.filter(deal => (deal.stage_c || deal.stage) === stage).length
     );
 
     return {
