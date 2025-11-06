@@ -3,7 +3,6 @@ import React, { Suspense, lazy } from "react";
 import Layout from "@/components/organisms/Layout";
 import Root from "@/layouts/Root";
 import { getRouteConfig } from "@/router/route.utils";
-
 // Lazy load all page components
 const Dashboard = lazy(() => import("@/components/pages/Dashboard"));
 const Contacts = lazy(() => import("@/components/pages/Contacts"));
@@ -69,7 +68,6 @@ const mainRoutes = [
     path: "contacts",
     element: <Contacts />
   }),
-  createRoute({
 createRoute({
     path: "pipeline", 
     element: <Pipeline />
