@@ -184,8 +184,10 @@ if (!String(formData.Name || '').trim()) {
     }
   }
 
-  function handleChange(field, value) {
-    setFormData(prev => ({ ...prev, [field]: value }));
+function handleChange(field, value) {
+    // Extract value from event object if needed to prevent circular JSON structure
+    const actualValue = value?.target?.value !== undefined ? value.target.value : value;
+    setFormData(prev => ({ ...prev, [field]: actualValue }));
     if (formErrors[field]) {
       setFormErrors(prev => ({ ...prev, [field]: '' }));
     }
