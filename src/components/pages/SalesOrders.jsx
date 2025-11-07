@@ -127,7 +127,7 @@ function SalesOrders() {
   function validateForm() {
     const errors = {};
     
-    if (!formData.Name?.trim()) {
+if (!String(formData.Name || '').trim()) {
       errors.Name = 'Order name is required';
     }
     
