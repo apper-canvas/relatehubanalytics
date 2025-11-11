@@ -1,23 +1,21 @@
-import { createBrowserRouter } from 'react-router-dom';
-import React, { Suspense, lazy } from 'react';
-import Layout from '@/components/organisms/Layout';
-import Root from '@/layouts/Root';
-import { getRouteConfig } from '@/router/route.utils';
+import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Root from "@/layouts/Root";
+import Layout from "@/components/organisms/Layout";
+import { getRouteConfig } from "@/router/route.utils";
 
-// Lazy load components
-const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
-const Contacts = lazy(() => import('@/components/pages/Contacts'));
-const Pipeline = lazy(() => import('@/components/pages/Pipeline'));
-const SalesOrders = lazy(() => import('@/components/pages/SalesOrders'));
-const Quotes = lazy(() => import('@/components/pages/Quotes'));
-const Tasks = lazy(() => import('@/components/pages/Tasks'));
-const Login = lazy(() => import('@/components/pages/Login'));
-const Signup = lazy(() => import('@/components/pages/Signup'));
-const Callback = lazy(() => import('@/components/pages/Callback'));
-const ErrorPage = lazy(() => import('@/components/pages/ErrorPage'));
-const ResetPassword = lazy(() => import('@/components/pages/ResetPassword'));
-const PromptPassword = lazy(() => import('@/components/pages/PromptPassword'));
-const NotFound = lazy(() => import('@/components/pages/NotFound'));
+// Lazy load all page components
+const Dashboard = lazy(() => import("@/components/pages/Dashboard"));
+const Contacts = lazy(() => import("@/components/pages/Contacts"));
+const Pipeline = lazy(() => import("@/components/pages/Pipeline"));
+const Tasks = lazy(() => import("@/components/pages/Tasks"));
+const NotFound = lazy(() => import("@/components/pages/NotFound"));
+const Login = lazy(() => import("@/components/pages/Login"));
+const Signup = lazy(() => import("@/components/pages/Signup"));
+const Callback = lazy(() => import("@/components/pages/Callback"));
+const ErrorPage = lazy(() => import("@/components/pages/ErrorPage"));
+const ResetPassword = lazy(() => import("@/components/pages/ResetPassword"));
+const PromptPassword = lazy(() => import("@/components/pages/PromptPassword"));
 
 const createRoute = ({
   path,
@@ -44,7 +42,7 @@ const createRoute = ({
     <div className="text-center space-y-4">
       <svg className="animate-spin h-12 w-12 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
       </svg>
     </div>
   </div>}>{element}</Suspense> : element,
@@ -61,74 +59,65 @@ const createRoute = ({
   return route;
 };
 
-export const router = createBrowserRouter([
+const mainRoutes = [
+  createRoute({
+    index: true,
+    element: <Dashboard />
+  }),
+  createRoute({
+    path: "contacts",
+    element: <Contacts />
+  }),
+  createRoute({
+    path: "pipeline", 
+    element: <Pipeline />
+  }),
+  createRoute({
+    path: "tasks",
+    element: <Tasks />
+  }),
+  createRoute({
+    path: "*",
+    element: <NotFound />
+  }),
+];
+
+const routes = [
   {
     path: "/",
     element: <Root />,
     children: [
-      // Authentication routes
       createRoute({
-        path: "/login", 
+        path: "login",
         element: <Login />
       }),
       createRoute({
-        path: "/signup", 
+        path: "signup", 
         element: <Signup />
       }),
       createRoute({
-        path: "/callback", 
+        path: "callback",
         element: <Callback />
       }),
       createRoute({
-        path: "/error", 
+        path: "error",
         element: <ErrorPage />
       }),
       createRoute({
-        path: "/reset-password/:appId/:fields", 
-        element: <ResetPassword />
-      }),
-      createRoute({
-        path: "/prompt-password/:appId/:emailAddress/:provider", 
+        path: "prompt-password/:appId/:emailAddress/:provider",
         element: <PromptPassword />
       }),
-      
-      // Main application routes
+      createRoute({
+        path: "reset-password/:appId/:fields",
+        element: <ResetPassword />
+      }),
       {
         path: "/",
         element: <Layout />,
-        children: [
-          createRoute({
-            index: true,
-            element: <Dashboard />
-          }),
-          createRoute({
-            path: "/contacts",
-            element: <Contacts />
-          }),
-          createRoute({
-            path: "/pipeline",
-            element: <Pipeline />
-          }),
-          createRoute({
-            path: "/sales-orders",
-            element: <SalesOrders />
-          }),
-          createRoute({
-            path: "/quotes",
-            element: <Quotes />
-          }),
-          createRoute({
-            path: "/tasks",
-            element: <Tasks />
-          })
-        ]
+        children: mainRoutes,
       },
-      
-      // 404 catch-all
-      createRoute({
-        path: "*", 
-        element: <NotFound />
-      })
-    ]
-  }
-]);
+    ],
+  },
+];
+
+export const router = createBrowserRouter(routes);

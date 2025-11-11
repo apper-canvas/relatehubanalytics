@@ -105,7 +105,7 @@ class DealService {
         throw new Error(response.message);
       }
 
-if (response.results) {
+      if (response.results) {
         const successful = response.results.filter(r => r.success);
         const failed = response.results.filter(r => !r.success);
         
@@ -114,22 +114,7 @@ if (response.results) {
           throw new Error('Failed to create deal');
         }
         
-        // Normalize the deal data for UI compatibility
-        const createdDeal = successful[0]?.data;
-        if (createdDeal) {
-          return {
-            ...createdDeal,
-            // Add normalized field names for UI compatibility
-            title: createdDeal.title_c,
-            value: createdDeal.value_c,
-            stage: createdDeal.stage_c,
-            probability: createdDeal.probability_c,
-            expectedCloseDate: createdDeal.expected_close_date_c,
-            contactId: createdDeal.contact_id_c
-          };
-        }
-        
-        return createdDeal;
+        return successful[0]?.data;
       }
 
       return response.data;

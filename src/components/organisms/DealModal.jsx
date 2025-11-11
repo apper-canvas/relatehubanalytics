@@ -37,7 +37,7 @@ title_c: "",
   }, [isOpen]);
 
   useEffect(() => {
-if (deal) {
+    if (deal) {
       setFormData({
 title_c: deal.title_c || deal.title || "",
         contact_id_c: deal.contact_id_c || deal.contactId || "",
@@ -48,12 +48,12 @@ title_c: deal.title_c || deal.title || "",
       });
     } else {
       setFormData({
-        title_c: "",
-        contact_id_c: "",
-        value_c: "",
-        stage_c: "Lead",
-        probability_c: "",
-        expected_close_date_c: "",
+        title: "",
+        contactId: "",
+        value: "",
+        stage: "Lead",
+        probability: "",
+        expectedCloseDate: "",
       });
     }
     setErrors({});
@@ -72,30 +72,30 @@ title_c: deal.title_c || deal.title || "",
   };
 
   const validateForm = () => {
-const newErrors = {};
+    const newErrors = {};
 
-    if (!formData.title_c.trim()) {
-      newErrors.title_c = "Deal title is required";
+    if (!formData.title.trim()) {
+      newErrors.title = "Deal title is required";
     }
 
-    if (!formData.contact_id_c) {
-      newErrors.contact_id_c = "Contact is required";
+    if (!formData.contactId) {
+      newErrors.contactId = "Contact is required";
     }
 
-    if (!formData.value_c.trim()) {
-      newErrors.value_c = "Deal value is required";
-    } else if (isNaN(formData.value_c) || parseFloat(formData.value_c) <= 0) {
-      newErrors.value_c = "Deal value must be a positive number";
+    if (!formData.value.trim()) {
+      newErrors.value = "Deal value is required";
+    } else if (isNaN(formData.value) || parseFloat(formData.value) <= 0) {
+      newErrors.value = "Deal value must be a positive number";
     }
 
-    if (!formData.probability_c.trim()) {
-      newErrors.probability_c = "Probability is required";
-    } else if (isNaN(formData.probability_c) || parseInt(formData.probability_c) < 0 || parseInt(formData.probability_c) > 100) {
-      newErrors.probability_c = "Probability must be between 0 and 100";
+    if (!formData.probability.trim()) {
+      newErrors.probability = "Probability is required";
+    } else if (isNaN(formData.probability) || parseInt(formData.probability) < 0 || parseInt(formData.probability) > 100) {
+      newErrors.probability = "Probability must be between 0 and 100";
     }
 
-    if (!formData.expected_close_date_c) {
-      newErrors.expected_close_date_c = "Expected close date is required";
+    if (!formData.expectedCloseDate) {
+      newErrors.expectedCloseDate = "Expected close date is required";
     }
 
     setErrors(newErrors);

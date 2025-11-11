@@ -29,13 +29,13 @@ setFormData({
         notes_c: contact.notes_c || contact.notes || "",
       });
     } else {
-setFormData({
-        name_c: "",
-        company_c: "",
-        email_c: "",
-        phone_c: "",
-        tags_c: "",
-        notes_c: "",
+      setFormData({
+        name: "",
+        company: "",
+        email: "",
+        phone: "",
+        tags: "",
+        notes: "",
       });
     }
     setErrors({});
@@ -44,19 +44,20 @@ setFormData({
   const validateForm = () => {
     const newErrors = {};
 
-if (!formData.name_c.trim()) {
-      newErrors.name_c = "Name is required";
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
     }
 
-    if (!formData.email_c.trim()) {
-      newErrors.email_c = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email_c)) {
-      newErrors.email_c = "Email is invalid";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
     }
 
-    if (!formData.phone_c.trim()) {
-      newErrors.phone_c = "Phone is required";
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone is required";
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

@@ -10,12 +10,10 @@ const Header = ({ onAddContact, onAddDeal, onAddTask }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-const navigation = [
+  const navigation = [
     { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
     { name: "Contacts", path: "/contacts", icon: "Users" },
     { name: "Pipeline", path: "/pipeline", icon: "GitBranch" },
-    { name: "Sales Orders", path: "/sales-orders", icon: "ShoppingCart" },
-    { name: "Quotes", path: "/quotes", icon: "FileText" },
     { name: "Tasks", path: "/tasks", icon: "CheckSquare" },
   ];
 

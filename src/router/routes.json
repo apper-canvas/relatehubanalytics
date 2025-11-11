@@ -44,18 +44,6 @@
             "rule": "authenticated"
           }
         ]
-}
-    }
-  },
-  "/quotes": {
-    "allow": {
-      "when": {
-        "conditions": [
-          {
-            "label": "Quotes page is public",
-            "rule": "public"
-          }
-        ]
       }
     }
   },
@@ -127,20 +115,7 @@
             "label": "Reset password page is public",
             "rule": "public"
           }
-]
-      }
-    },
-    "/sales-orders": {
-      "allow": {
-        "when": {
-          "conditions": [
-            {
-              "label": "User must be logged in to view sales orders",
-              "rule": "authenticated"
-            }
-          ]
-        },
-        "redirectOnDeny": "/login"
+        ]
       }
     }
   }
