@@ -2,13 +2,14 @@ import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 
-const Button = forwardRef(({ 
-  className, 
-  variant = "primary", 
-  size = "md", 
-  children, 
+const Button = forwardRef(({
+  className,
+  variant = "primary",
+  size = "md",
+  children,
   disabled,
-  ...props 
+  type = "button",
+  ...props
 }, ref) => {
   const variants = {
     primary: "bg-primary text-white hover:bg-blue-700 focus:ring-primary",
@@ -27,6 +28,7 @@ const Button = forwardRef(({
   return (
     <motion.button
       ref={ref}
+      type={type}
       whileHover={{ scale: disabled ? 1 : 1.02 }}
       whileTap={{ scale: disabled ? 1 : 0.98 }}
       className={cn(
