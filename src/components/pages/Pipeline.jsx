@@ -126,7 +126,19 @@ timestamp_c: safeToISOString(),
 timestamp_c: safeToISOString(),
         });
         
-        setDeals(prev => [...prev, newDeal]);
+// Ensure the new deal has both database and normalized field names for UI compatibility
+        const normalizedDeal = {
+          ...newDeal,
+          // Ensure UI-expected field names are available
+          title: newDeal.title_c || newDeal.title,
+          value: newDeal.value_c || newDeal.value,
+          stage: newDeal.stage_c || newDeal.stage,
+          probability: newDeal.probability_c || newDeal.probability,
+          expectedCloseDate: newDeal.expected_close_date_c || newDeal.expectedCloseDate,
+          contactId: newDeal.contact_id_c || newDeal.contactId
+        };
+        
+        setDeals(prev => [...prev, normalizedDeal]);
       }
       
       setIsModalOpen(false);

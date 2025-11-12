@@ -1,0 +1,467 @@
+[
+  {
+    "Id": 1,
+    "company": "Acme Corporation",
+    "contact": "John Smith",
+    "deal": "Website Redesign Project",
+    "contact_id": 1,
+    "deal_id": 1,
+    "quote_date": "2024-01-15",
+    "status": "Sent",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-14",
+    "billing_address": {
+      "bill_to_name": "John Smith",
+      "street": "123 Business Ave",
+      "city": "New York",
+      "state": "NY",
+      "country": "USA",
+      "pincode": "10001"
+    },
+    "shipping_address": {
+      "ship_to_name": "John Smith",
+      "street": "123 Business Ave",
+      "city": "New York",
+      "state": "NY",
+      "country": "USA",
+      "pincode": "10001"
+    },
+    "quote_value": 15000,
+    "created_date": "2024-01-15T08:00:00Z",
+    "modified_date": "2024-01-15T08:00:00Z"
+  },
+  {
+    "Id": 2,
+    "company": "TechStart Inc",
+    "contact": "Sarah Johnson",
+    "deal": "Mobile App Development",
+    "contact_id": 2,
+    "deal_id": 2,
+    "quote_date": "2024-01-10",
+    "status": "Approved",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-10",
+    "billing_address": {
+      "bill_to_name": "Sarah Johnson",
+      "street": "456 Tech Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "country": "USA",
+      "pincode": "94105"
+    },
+    "shipping_address": {
+      "ship_to_name": "TechStart Inc - Development Team",
+      "street": "456 Tech Street, Floor 5",
+      "city": "San Francisco",
+      "state": "CA",
+      "country": "USA",
+      "pincode": "94105"
+    },
+    "quote_value": 25000,
+    "created_date": "2024-01-10T09:30:00Z",
+    "modified_date": "2024-01-12T14:20:00Z"
+  },
+  {
+    "Id": 3,
+    "company": "Global Solutions Ltd",
+    "contact": "Mike Davis",
+    "deal": "ERP System Integration",
+    "contact_id": 3,
+    "deal_id": 3,
+    "quote_date": "2024-01-08",
+    "status": "Draft",
+    "delivery_method": "Mail",
+    "expires_on": "2024-02-08",
+    "billing_address": {
+      "bill_to_name": "Mike Davis",
+      "street": "789 Enterprise Blvd",
+      "city": "Chicago",
+      "state": "IL",
+      "country": "USA",
+      "pincode": "60601"
+    },
+    "shipping_address": {
+      "ship_to_name": "Global Solutions Ltd - IT Department",
+      "street": "789 Enterprise Blvd, Suite 200",
+      "city": "Chicago",
+      "state": "IL",
+      "country": "USA",
+      "pincode": "60601"
+    },
+    "quote_value": 45000,
+    "created_date": "2024-01-08T11:15:00Z",
+    "modified_date": "2024-01-08T11:15:00Z"
+  },
+  {
+    "Id": 4,
+    "company": "Creative Agency Pro",
+    "contact": "Lisa Wilson",
+    "deal": "Brand Identity Package",
+    "contact_id": 4,
+    "deal_id": 4,
+    "quote_date": "2024-01-05",
+    "status": "Expired",
+    "delivery_method": "Email",
+    "expires_on": "2024-01-20",
+    "billing_address": {
+      "bill_to_name": "Lisa Wilson",
+      "street": "321 Design District",
+      "city": "Los Angeles",
+      "state": "CA",
+      "country": "USA",
+      "pincode": "90028"
+    },
+    "shipping_address": {
+      "ship_to_name": "Creative Agency Pro",
+      "street": "321 Design District",
+      "city": "Los Angeles",
+      "state": "CA",
+      "country": "USA",
+      "pincode": "90028"
+    },
+    "quote_value": 8500,
+    "created_date": "2024-01-05T10:00:00Z",
+    "modified_date": "2024-01-05T10:00:00Z"
+  },
+  {
+    "Id": 5,
+    "company": "Manufacturing Corp",
+    "contact": "Robert Brown",
+    "deal": "Supply Chain Optimization",
+    "contact_id": 5,
+    "deal_id": 5,
+    "quote_date": "2024-01-12",
+    "status": "Sent",
+    "delivery_method": "Pickup",
+    "expires_on": "2024-02-12",
+    "billing_address": {
+      "bill_to_name": "Robert Brown",
+      "street": "555 Industrial Way",
+      "city": "Detroit",
+      "state": "MI",
+      "country": "USA",
+      "pincode": "48201"
+    },
+    "shipping_address": {
+      "ship_to_name": "Manufacturing Corp - Warehouse",
+      "street": "555 Industrial Way, Building C",
+      "city": "Detroit",
+      "state": "MI",
+      "country": "USA",
+      "pincode": "48201"
+    },
+    "quote_value": 32000,
+    "created_date": "2024-01-12T13:45:00Z",
+    "modified_date": "2024-01-12T13:45:00Z"
+  },
+  {
+    "Id": 6,
+    "company": "HealthTech Solutions",
+    "contact": "Dr. Jennifer Lee",
+    "deal": "Patient Management System",
+    "contact_id": 6,
+    "deal_id": 6,
+    "quote_date": "2024-01-18",
+    "status": "Approved",
+    "delivery_method": "Delivery",
+    "expires_on": "2024-02-18",
+    "billing_address": {
+      "bill_to_name": "Dr. Jennifer Lee",
+      "street": "777 Medical Center Dr",
+      "city": "Boston",
+      "state": "MA",
+      "country": "USA",
+      "pincode": "02101"
+    },
+    "shipping_address": {
+      "ship_to_name": "HealthTech Solutions - Server Room",
+      "street": "777 Medical Center Dr, Floor 3",
+      "city": "Boston",
+      "state": "MA",
+      "country": "USA",
+      "pincode": "02101"
+    },
+    "quote_value": 65000,
+    "created_date": "2024-01-18T16:20:00Z",
+    "modified_date": "2024-01-20T09:10:00Z"
+  },
+  {
+    "Id": 7,
+    "company": "Financial Partners LLC",
+    "contact": "David Kim",
+    "deal": "Risk Management Platform",
+    "contact_id": 7,
+    "deal_id": 7,
+    "quote_date": "2024-01-14",
+    "status": "Rejected",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-14",
+    "billing_address": {
+      "bill_to_name": "David Kim",
+      "street": "999 Finance Row",
+      "city": "Houston",
+      "state": "TX",
+      "country": "USA",
+      "pincode": "77002"
+    },
+    "shipping_address": {
+      "ship_to_name": "Financial Partners LLC",
+      "street": "999 Finance Row",
+      "city": "Houston",
+      "state": "TX",
+      "country": "USA",
+      "pincode": "77002"
+    },
+    "quote_value": 28000,
+    "created_date": "2024-01-14T12:30:00Z",
+    "modified_date": "2024-01-16T15:45:00Z"
+  },
+  {
+    "Id": 8,
+    "company": "Retail Chain Plus",
+    "contact": "Amanda Taylor",
+    "deal": "Inventory Management System",
+    "contact_id": 8,
+    "deal_id": 8,
+    "quote_date": "2024-01-16",
+    "status": "Draft",
+    "delivery_method": "Mail",
+    "expires_on": "2024-02-16",
+    "billing_address": {
+      "bill_to_name": "Amanda Taylor",
+      "street": "111 Retail Plaza",
+      "city": "Miami",
+      "state": "FL",
+      "country": "USA",
+      "pincode": "33101"
+    },
+    "shipping_address": {
+      "ship_to_name": "Retail Chain Plus - HQ",
+      "street": "111 Retail Plaza, Suite 500",
+      "city": "Miami",
+      "state": "FL",
+      "country": "USA",
+      "pincode": "33101"
+    },
+    "quote_value": 18500,
+    "created_date": "2024-01-16T14:00:00Z",
+    "modified_date": "2024-01-16T14:00:00Z"
+  },
+  {
+    "Id": 9,
+    "company": "Education First Academy",
+    "contact": "Professor Mark Johnson",
+    "deal": "Learning Management System",
+    "contact_id": 9,
+    "deal_id": 9,
+    "quote_date": "2024-01-11",
+    "status": "Sent",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-11",
+    "billing_address": {
+      "bill_to_name": "Professor Mark Johnson",
+      "street": "333 Campus Drive",
+      "city": "Seattle",
+      "state": "WA",
+      "country": "USA",
+      "pincode": "98101"
+    },
+    "shipping_address": {
+      "ship_to_name": "Education First Academy - IT Center",
+      "street": "333 Campus Drive, Building A",
+      "city": "Seattle",
+      "state": "WA",
+      "country": "USA",
+      "pincode": "98101"
+    },
+    "quote_value": 22000,
+    "created_date": "2024-01-11T10:30:00Z",
+    "modified_date": "2024-01-11T10:30:00Z"
+  },
+  {
+    "Id": 10,
+    "company": "Transport Solutions Inc",
+    "contact": "Chris Martinez",
+    "deal": "Fleet Management System",
+    "contact_id": 10,
+    "deal_id": 10,
+    "quote_date": "2024-01-13",
+    "status": "Approved",
+    "delivery_method": "Pickup",
+    "expires_on": "2024-02-13",
+    "billing_address": {
+      "bill_to_name": "Chris Martinez",
+      "street": "666 Transport Hub",
+      "city": "Phoenix",
+      "state": "AZ",
+      "country": "USA",
+      "pincode": "85001"
+    },
+    "shipping_address": {
+      "ship_to_name": "Transport Solutions Inc - Main Depot",
+      "street": "666 Transport Hub, Bay 12",
+      "city": "Phoenix",
+      "state": "AZ",
+      "country": "USA",
+      "pincode": "85001"
+    },
+    "quote_value": 41000,
+    "created_date": "2024-01-13T08:15:00Z",
+    "modified_date": "2024-01-15T11:30:00Z"
+  },
+  {
+    "Id": 11,
+    "company": "Real Estate Pros",
+    "contact": "Patricia White",
+    "deal": "Property Management Platform",
+    "contact_id": 11,
+    "deal_id": 11,
+    "quote_date": "2024-01-17",
+    "status": "Draft",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-17",
+    "billing_address": {
+      "bill_to_name": "Patricia White",
+      "street": "888 Property Lane",
+      "city": "Denver",
+      "state": "CO",
+      "country": "USA",
+      "pincode": "80201"
+    },
+    "shipping_address": {
+      "ship_to_name": "Real Estate Pros",
+      "street": "888 Property Lane",
+      "city": "Denver",
+      "state": "CO",
+      "country": "USA",
+      "pincode": "80201"
+    },
+    "quote_value": 12500,
+    "created_date": "2024-01-17T15:20:00Z",
+    "modified_date": "2024-01-17T15:20:00Z"
+  },
+  {
+    "Id": 12,
+    "company": "Energy Systems Ltd",
+    "contact": "Thomas Anderson",
+    "deal": "Smart Grid Implementation",
+    "contact_id": 12,
+    "deal_id": 12,
+    "quote_date": "2024-01-09",
+    "status": "Sent",
+    "delivery_method": "Delivery",
+    "expires_on": "2024-02-09",
+    "billing_address": {
+      "bill_to_name": "Thomas Anderson",
+      "street": "444 Power Grid St",
+      "city": "Atlanta",
+      "state": "GA",
+      "country": "USA",
+      "pincode": "30301"
+    },
+    "shipping_address": {
+      "ship_to_name": "Energy Systems Ltd - Operations",
+      "street": "444 Power Grid St, Facility B",
+      "city": "Atlanta",
+      "state": "GA",
+      "country": "USA",
+      "pincode": "30301"
+    },
+    "quote_value": 85000,
+    "created_date": "2024-01-09T07:45:00Z",
+    "modified_date": "2024-01-09T07:45:00Z"
+  },
+  {
+    "Id": 13,
+    "company": "Food Service Group",
+    "contact": "Maria Rodriguez",
+    "deal": "Restaurant POS System",
+    "contact_id": 13,
+    "deal_id": 13,
+    "quote_date": "2024-01-19",
+    "status": "Approved",
+    "delivery_method": "Mail",
+    "expires_on": "2024-02-19",
+    "billing_address": {
+      "bill_to_name": "Maria Rodriguez",
+      "street": "222 Restaurant Row",
+      "city": "Las Vegas",
+      "state": "NV",
+      "country": "USA",
+      "pincode": "89101"
+    },
+    "shipping_address": {
+      "ship_to_name": "Food Service Group - Main Kitchen",
+      "street": "222 Restaurant Row, Back Entrance",
+      "city": "Las Vegas",
+      "state": "NV",
+      "country": "USA",
+      "pincode": "89101"
+    },
+    "quote_value": 9800,
+    "created_date": "2024-01-19T12:00:00Z",
+    "modified_date": "2024-01-21T10:15:00Z"
+  },
+  {
+    "Id": 14,
+    "company": "Sports Analytics Co",
+    "contact": "Kevin Thompson",
+    "deal": "Performance Tracking System",
+    "contact_id": 14,
+    "deal_id": 14,
+    "quote_date": "2024-01-20",
+    "status": "Draft",
+    "delivery_method": "Email",
+    "expires_on": "2024-02-20",
+    "billing_address": {
+      "bill_to_name": "Kevin Thompson",
+      "street": "555 Sports Complex",
+      "city": "Orlando",
+      "state": "FL",
+      "country": "USA",
+      "pincode": "32801"
+    },
+    "shipping_address": {
+      "ship_to_name": "Sports Analytics Co - Training Facility",
+      "street": "555 Sports Complex, Building 3",
+      "city": "Orlando",
+      "state": "FL",
+      "country": "USA",
+      "pincode": "32801"
+    },
+    "quote_value": 16750,
+    "created_date": "2024-01-20T16:30:00Z",
+    "modified_date": "2024-01-20T16:30:00Z"
+  },
+  {
+    "Id": 15,
+    "company": "Consulting Partners",
+    "contact": "Nancy Davis",
+    "deal": "Business Intelligence Platform",
+    "contact_id": 15,
+    "deal_id": 15,
+    "quote_date": "2024-01-21",
+    "status": "Sent",
+    "delivery_method": "Pickup",
+    "expires_on": "2024-02-21",
+    "billing_address": {
+      "bill_to_name": "Nancy Davis",
+      "street": "777 Consulting Ave",
+      "city": "Portland",
+      "state": "OR",
+      "country": "USA",
+      "pincode": "97201"
+    },
+    "shipping_address": {
+      "ship_to_name": "Consulting Partners - Conference Room A",
+      "street": "777 Consulting Ave, Floor 10",
+      "city": "Portland",
+      "state": "OR",
+      "country": "USA",
+      "pincode": "97201"
+    },
+    "quote_value": 38500,
+    "created_date": "2024-01-21T09:00:00Z",
+    "modified_date": "2024-01-21T09:00:00Z"
+  }
+]
