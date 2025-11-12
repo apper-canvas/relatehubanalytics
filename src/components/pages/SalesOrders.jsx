@@ -150,8 +150,9 @@ function SalesOrders() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    
-    if (!validateForm()) return;
+
+    console.log('validate form :', validateForm());
+    if (validateForm()) return;
 
     setSubmitting(true);
     try {
