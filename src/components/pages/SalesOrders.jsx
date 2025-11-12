@@ -125,22 +125,27 @@ function SalesOrders() {
   }
 
   function validateForm() {
+    try { 
     const errors = {};
-    
-if (!String(formData.Name || '').trim()) {
+
+    if (!String(formData.Name || '').trim()) {
       errors.Name = 'Order name is required';
     }
-    
+
     if (!formData.amount_c || parseFloat(formData.amount_c) <= 0) {
       errors.amount_c = 'Amount must be greater than 0';
     }
-    
+
     if (!formData.order_date_c) {
       errors.order_date_c = 'Order date is required';
     }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
+  }
+    catch(error) { 
+      console.error(error);
+    }
   }
 
   async function handleSubmit(e) {
