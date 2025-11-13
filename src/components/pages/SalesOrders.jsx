@@ -125,17 +125,16 @@ function SalesOrders() {
   }
 
   function validateForm() {
-    try { 
     const errors = {};
-
-    if (!String(formData.Name || '').trim()) {
+    
+    if (!formData.Name?.trim()) {
       errors.Name = 'Order name is required';
     }
-
+    
     if (!formData.amount_c || parseFloat(formData.amount_c) <= 0) {
       errors.amount_c = 'Amount must be greater than 0';
     }
-
+    
     if (!formData.order_date_c) {
       errors.order_date_c = 'Order date is required';
     }
@@ -143,16 +142,11 @@ function SalesOrders() {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   }
-    catch(error) { 
-      console.error(error);
-    }
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    console.log('validate form :', validateForm());
-    if (validateForm()) return;
+    
+    if (!validateForm()) return;
 
     setSubmitting(true);
     try {
@@ -190,10 +184,8 @@ function SalesOrders() {
     }
   }
 
-function handleChange(field, value) {
-    // Extract value from event object if needed to prevent circular JSON structure
-    const actualValue = value?.target?.value !== undefined ? value.target.value : value;
-    setFormData(prev => ({ ...prev, [field]: actualValue }));
+  function handleChange(field, value) {
+    setFormData(prev => ({ ...prev, [field]: value }));
     if (formErrors[field]) {
       setFormErrors(prev => ({ ...prev, [field]: '' }));
     }

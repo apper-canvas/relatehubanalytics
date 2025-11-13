@@ -91,15 +91,12 @@ class SalesOrderService {
       // Filter to only updateable fields and handle lookup fields
       const filteredData = {};
       this.updateableFields.forEach(field => {
-if (salesOrderData[field] !== undefined && salesOrderData[field] !== null && salesOrderData[field] !== '') {
+        if (salesOrderData[field] !== undefined && salesOrderData[field] !== null && salesOrderData[field] !== '') {
           if (field === 'deal_id_c' || field === 'contact_id_c') {
             // Handle lookup fields - ensure we send only the ID
             filteredData[field] = typeof salesOrderData[field] === 'object' 
               ? salesOrderData[field].Id 
               : parseInt(salesOrderData[field]);
-          } else if (field === 'amount_c') {
-            // Handle decimal field - ensure we send as numeric value
-            filteredData[field] = parseFloat(salesOrderData[field]);
           } else {
             filteredData[field] = salesOrderData[field];
           }
@@ -154,15 +151,12 @@ if (salesOrderData[field] !== undefined && salesOrderData[field] !== null && sal
       // Filter to only updateable fields and handle lookup fields
       const filteredData = { Id: parseInt(id) };
       this.updateableFields.forEach(field => {
-if (salesOrderData[field] !== undefined && salesOrderData[field] !== null && salesOrderData[field] !== '') {
+        if (salesOrderData[field] !== undefined && salesOrderData[field] !== null && salesOrderData[field] !== '') {
           if (field === 'deal_id_c' || field === 'contact_id_c') {
             // Handle lookup fields - ensure we send only the ID
             filteredData[field] = typeof salesOrderData[field] === 'object' 
               ? salesOrderData[field].Id 
               : parseInt(salesOrderData[field]);
-          } else if (field === 'amount_c') {
-            // Handle decimal field - ensure we send as numeric value
-            filteredData[field] = parseFloat(salesOrderData[field]);
           } else {
             filteredData[field] = salesOrderData[field];
           }
